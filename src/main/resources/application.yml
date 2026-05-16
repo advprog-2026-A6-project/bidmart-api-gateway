@@ -1,0 +1,48 @@
+server:
+  port: 8080 # Port pintu masuk utama untuk Frontend
+
+spring:
+  application:
+    name: bidmart-api-gateway
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:5173" # Port React-mu
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            allowedHeaders: "*"
+      routes:
+        # 1. Rute ke Modul Auth milikmu
+        - id: auth-service
+          uri: http://localhost:8081 # Pastikan Auth jalan di port ini
+          predicates:
+            - Path=/api/auth/**, /api/profile/**, /api/admin/**
+            
+        # 2. Rute ke Modul Lelang (Auction)
+        - id: auction-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/auction/**
+
+        # 3. Rute ke Modul Katalog
+        - id: katalog-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/katalog/**
+            
+        # 4. Rute ke Modul Dompet (Wallet)
+        - id: wallet-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/wallet/**
+
+        # 5. Rute ke Modul Notifikasi
+        - id: notification-service
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/notification/**
