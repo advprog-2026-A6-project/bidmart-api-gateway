@@ -39,7 +39,7 @@ spring:
 
             # 4. Rute ke Modul Dompet (Wallet)
             - id: wallet-service
-              uri: http://localhost:8084
+              uri: ${WALLET_SERVICE_URL:http://34.226.162.160:8084}
               predicates:
                 - Path=/api/wallet/**
 
