@@ -16,33 +16,35 @@ spring:
               - PUT
               - DELETE
             allowedHeaders: "*"
-      routes:
-        # 1. Rute ke Modul Authentication
-        - id: auth-service
-          uri: http://localhost:8081
-          predicates:
-            - Path=/api/auth/**, /api/profile/**, /api/admin/**
-            
-        # 2. Rute ke Modul Lelang (Auction)
-        - id: auction-service
-          uri: http://localhost:8082
-          predicates:
-            - Path=/api/auction/**
+      server:
+        webmvc:
+          routes:
+            # 1. Rute ke Modul Authentication
+            - id: auth-service
+              uri: http://localhost:8081
+              predicates:
+                - Path=/api/auth/**, /api/profile/**, /api/admin/**
 
-        # 3. Rute ke Modul Katalog
-        - id: katalog-service
-          uri: http://localhost:8083
-          predicates:
-            - Path=/api/katalog/**
-            
-        # 4. Rute ke Modul Dompet (Wallet)
-        - id: wallet-service
-          uri: http://localhost:8084
-          predicates:
-            - Path=/api/wallet/**
+            # 2. Rute ke Modul Lelang (Auction)
+            - id: auction-service
+              uri: http://localhost:8082
+              predicates:
+                - Path=/api/auctions/**
 
-        # 5. Rute ke Modul Notifikasi
-        - id: notification-service
-          uri: http://localhost:8085
-          predicates:
-            - Path=/api/notification/**
+            # 3. Rute ke Modul Katalog
+            - id: katalog-service
+              uri: http://localhost:8083
+              predicates:
+                - Path=/listings/**, /api/categories/**, /api/listings/internal/**
+
+            # 4. Rute ke Modul Dompet (Wallet)
+            - id: wallet-service
+              uri: http://localhost:8084
+              predicates:
+                - Path=/api/wallet/**
+
+            # 5. Rute ke Modul Notifikasi
+            - id: notification-service
+              uri: http://localhost:8085
+              predicates:
+                - Path=/api/order-notification/**, /api/notifications/**
