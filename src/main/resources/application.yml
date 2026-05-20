@@ -1,6 +1,10 @@
 server:
   port: 8080
 
+auth:
+  service:
+    url: ${AUTH_SERVICE_URL:http://35.168.202.46:8081}
+
 spring:
   application:
     name: bidmart-api-gateway
