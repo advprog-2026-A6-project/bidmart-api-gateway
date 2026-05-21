@@ -90,14 +90,32 @@ jobs:
           set -euo pipefail
 
           if ! command -v docker >/dev/null 2>&1; then
-            echo "Docker is not installed on this EC2 instance."
-            echo "Install Docker first, then rerun this workflow."
-            exit 1
+            echo "Docker is not installed. Installing Docker..."
+
+            if command -v apt-get >/dev/null 2>&1; then
+              sudo apt-get update
+              sudo apt-get install -y docker.io
+            elif command -v yum >/dev/null 2>&1; then
+              sudo yum update -y
+              sudo yum install -y docker
+            elif command -v dnf >/dev/null 2>&1; then
+              sudo dnf install -y docker
+            else
+              echo "Could not detect a supported package manager to install Docker."
+              exit 1
+            fi
           fi
 
-          docker load -i "/tmp/$IMAGE_NAME.tar.gz"
-          docker stop "$CONTAINER_NAME" >/dev/null 2>&1 || true
-          docker rm "$CONTAINER_NAME" >/dev/null 2>&1 || true
+          sudo systemctl enable --now docker
+
+          docker_cmd=(docker)
+          if ! docker ps >/dev/null 2>&1; then
+            docker_cmd=(sudo docker)
+          fi
+
+          "${docker_cmd[@]}" load -i "/tmp/$IMAGE_NAME.tar.gz"
+          "${docker_cmd[@]}" stop "$CONTAINER_NAME" >/dev/null 2>&1 || true
+          "${docker_cmd[@]}" rm "$CONTAINER_NAME" >/dev/null 2>&1 || true
 
           env_args=()
           for var_name in \
@@ -112,13 +130,13 @@ jobs:
             fi
           done
 
-          docker run -d \
+          "${docker_cmd[@]}" run -d \
             --name "$CONTAINER_NAME" \
             --restart unless-stopped \
             -p "$APP_PORT:8080" \
             "${env_args[@]}" \
             "$IMAGE_NAME:$IMAGE_TAG"
 
-          docker image prune -f
+          "${docker_cmd[@]}" image prune -f
           rm -f "/tmp/$IMAGE_NAME.tar.gz"
           EOF
