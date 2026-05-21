@@ -25,7 +25,7 @@ class BidmartApiGatewayApplicationTests {
 				.findFirst()
 				.orElseThrow();
 
-		assertThat(auctionRoute.getUri()).hasToString("http://localhost:8082");
+		assertThat(auctionRoute.getUri()).hasToString("http://52.45.239.233:8082");
 		assertThat(auctionRoute.getPredicates()).hasSize(1);
 		assertThat(auctionRoute.getPredicates().getFirst().getName()).isEqualTo("Path");
 		assertThat(auctionRoute.getPredicates().getFirst().getArgs())
