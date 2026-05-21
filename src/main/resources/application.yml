@@ -53,6 +53,6 @@ spring:
 
             # 5. Rute ke Modul Notifikasi
             - id: notification-service
-              uri: ${NOTIFICATION_SERVICE_URL:http://localhost:8085}
+              uri: ${NOTIFICATION_SERVICE_URL:http://3.229.230.144:8085}
               predicates:
                 - Path=/api/order-notification/**, /api/notifications/**

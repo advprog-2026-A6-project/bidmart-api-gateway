@@ -1,0 +1,8 @@
+.git
+.gradle
+build
+out
+*.log
+.DS_Store
+Dockerfile
+README.md
