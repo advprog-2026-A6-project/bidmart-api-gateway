@@ -53,6 +53,7 @@ public class AuthGatewayFilter extends OncePerRequestFilter {
             Map.entry("POST /api/admin/rbac/**", "rbac:manage"),
             Map.entry("DELETE /api/admin/rbac/**", "rbac:manage"),
             Map.entry("POST /api/admin/users/**", "user:deactivate"),
+            Map.entry("GET /listings/mine", "auction:create"),
             Map.entry("POST /listings", "auction:create"),
             Map.entry("PUT /listings/*", "auction:create"),
             Map.entry("DELETE /listings/*", "auction:create"),
@@ -122,6 +123,9 @@ public class AuthGatewayFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         if (PUBLIC_AUTH_PATHS.contains(path)) {
             return true;
+        }
+        if ("/listings/mine".equals(path)) {
+            return false;
         }
         if (HttpMethod.GET.matches(request.getMethod())) {
             return PUBLIC_GET_PATTERNS.stream().anyMatch(pattern -> PATH_MATCHER.match(pattern, path));
