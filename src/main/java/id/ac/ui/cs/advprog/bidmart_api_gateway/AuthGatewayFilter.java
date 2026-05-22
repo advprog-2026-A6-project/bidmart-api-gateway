@@ -56,7 +56,10 @@ public class AuthGatewayFilter extends OncePerRequestFilter {
             Map.entry("POST /listings", "auction:create"),
             Map.entry("PUT /listings/*", "auction:create"),
             Map.entry("DELETE /listings/*", "auction:create"),
-            Map.entry("POST /listings/*/cancel", "auction:create")
+            Map.entry("POST /listings/*/cancel", "auction:create"),
+            Map.entry("POST /api/wallet/hold", "system:internal"),
+            Map.entry("POST /api/wallet/release", "system:internal"),
+            Map.entry("POST /api/wallet/settle", "system:internal")
     );
 
     private final RestClient restClient;
