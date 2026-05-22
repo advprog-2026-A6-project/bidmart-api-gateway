@@ -38,7 +38,7 @@ spring:
             - id: auction-service
               uri: ${AUCTION_SERVICE_URL:http://52.45.239.233:8082}
               predicates:
-                - Path=/api/auctions/**
+                - Path=/api/auctions,/api/auctions/**
 
             # 3. Rute ke Modul Katalog
             - id: katalog-service
